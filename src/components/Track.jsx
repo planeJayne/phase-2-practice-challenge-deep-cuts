@@ -2,7 +2,7 @@ import React from 'react'
 import defaultVinyl from '../assets/vinyl_PNG111.png'
 
 function Track({track}) {
-  const {image, title, artist, BPM} = track
+  const {image, title, BPM} = track
   return (
     <tr className="table-row">
         <td className="row-image">

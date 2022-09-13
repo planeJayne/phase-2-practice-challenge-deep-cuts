@@ -3,7 +3,7 @@ import Search from './Search'
 import AddTrackForm from './AddTrackForm'
 import TracksList from './TracksList'
 
-function TracksPage() {
+function TracksPage({onNewTrack}) {
   const [tracks, setTracks]= useState([])
 
   useEffect(() =>{
@@ -11,11 +11,33 @@ function TracksPage() {
     .then((r) => r.json())
     .then((data) => setTracks(data))
   }, [])
+
+  function handleNewTrack(newTrack) {
+    const {image, title, artist, bpm} = newTrack
+
+    const newTrackBody ={
+      image: image,
+      title: title,
+      artist: artist,
+      BPM: parseInt(bpm)
+    }
+    fetch('http://localhost:8001/tracks', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newTrackBody)
+    })
+    .then(r => r.json())
+    .then(addedTrack => {
+      setTracks([...tracks, addedTrack])
+    })
+  }
     
   return (
     <div>
       <Search />
-      <AddTrackForm />
+      <AddTrackForm onNewTrack={handleNewTrack}/>
       <TracksList tracks={tracks}/>
     </div>
   )
